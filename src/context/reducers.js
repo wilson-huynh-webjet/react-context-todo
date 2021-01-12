@@ -4,7 +4,7 @@ const reducer = (state, { type, payload }) => {
   switch (type) {
     case TYPES.ADD_TODO:
       state.todoList.unshift({
-        id: Math.random(),
+        id: Date.now(),
         name: payload,
         complete: false,
       });

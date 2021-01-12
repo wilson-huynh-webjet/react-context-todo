@@ -1,4 +1,4 @@
-import React, { createContext, useEffect } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import reducer from "./reducers";
 import Axios from "axios";
@@ -11,7 +11,13 @@ const initialState = {
   status: 0, // 0:loading, 1:success, 2:error
 };
 
-const TodoContext = createContext();
+const TodoStateContext = createContext();
+const TodoDispatchContext = createContext();
+
+const useTodoStateContext = () => useContext(TodoStateContext)
+const useTodoDispatchContext = () => useContext(TodoDispatchContext)
+const useTodoContext = () => [ useTodoStateContext(), useTodoDispatchContext() ]
+
 const ContextProvider = ({ children }) => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
 
@@ -27,10 +33,13 @@ const ContextProvider = ({ children }) => {
   useEffect(fetchTodoList, [state.fetchTodo]);
 
   return (
-    <TodoContext.Provider value={{ state, dispatch }}>
-      {children}
-    </TodoContext.Provider>
+    <TodoStateContext.Provider value={ state }>
+      <TodoDispatchContext.Provider value={ dispatch }>
+        {children}
+        <pre>{JSON.stringify(state, null, 2)}</pre>
+      </TodoDispatchContext.Provider>
+    </TodoStateContext.Provider>
   );
 };
 
-export { TodoContext, ContextProvider };
+export { useTodoContext, useTodoStateContext, useTodoDispatchContext, ContextProvider };

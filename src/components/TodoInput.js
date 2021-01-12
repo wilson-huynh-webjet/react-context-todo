@@ -1,10 +1,10 @@
-import React, { useState, useContext } from "react";
-import { TodoContext } from "../context";
+import React, { useState } from "react";
+import { useTodoDispatchContext } from "../context";
 import TYPES from "../context/types";
 
 const Todoinput = () => {
   const [todo, setTodo] = useState("");
-  const { dispatch } = useContext(TodoContext);
+  const dispatch = useTodoDispatchContext();
 
   const handleOnClick = (e) => {
     e.preventDefault();

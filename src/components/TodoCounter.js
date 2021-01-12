@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
-import { TodoContext } from "../context";
+import React from "react";
+import { useTodoStateContext } from "../context";
 
 const Todocounter = () => {
-  const {state} = useContext(TodoContext);
+  const state = useTodoStateContext();
   const todoCount = state.todoList.filter((i) => i.complete === false).length;
   const doneCount = state.todoList.filter((i) => i.complete === true).length;
 

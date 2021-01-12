@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import { TodoContext } from "../context";
+import React from "react";
+import { useTodoContext } from "../context";
 import TYPES from "../context/types";
 
 const Todolist = () => {
-  const { state, dispatch } = useContext(TodoContext);
+  const [state, dispatch] = useTodoContext();
 
   const handleOnChange = (index) => {
     dispatch({type: TYPES.TOGGLE_TODO, payload: index})

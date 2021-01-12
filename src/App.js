@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import TodoCounter from "./components/TodoCounter";
 import TodoInput from "./components/TodoInput";
 import TodoList from "./components/TodoList";
 import Toggle from "./components/Toggle";
-import { TodoContext } from "./context";
+import { useTodoContext } from "./context";
 import TYPES from "./context/types";
 
 function App() {
-  const { state, dispatch } = useContext(TodoContext);
+  const [state, dispatch] = useTodoContext();
 
   return (
     <div className="App">
