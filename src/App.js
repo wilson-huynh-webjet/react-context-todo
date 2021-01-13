@@ -4,10 +4,14 @@ import TodoInput from "./components/TodoInput";
 import TodoList from "./components/TodoList";
 import Toggle from "./components/Toggle";
 import { useTodoContext } from "./context";
-import TYPES from "./context/types";
+import { fetchTodo } from "./context/actions";
 
 function App() {
   const [state, dispatch] = useTodoContext();
+
+  const handleOnClick = () => {
+    dispatch(fetchTodo());
+  };
 
   return (
     <div className="App">
@@ -17,11 +21,11 @@ function App() {
         <TodoCounter />
         <TodoInput />
         <TodoList />
-        <button onClick={() => dispatch({ type: TYPES.FETCH_TODO })}>Reset</button>
+        <button onClick={handleOnClick}>Reset</button>
       </Toggle>
       <Toggle show={state.status === 2}>
-        <div className='error'>Error while loading data</div>
-        <button onClick={() => dispatch({ type: TYPES.FETCH_TODO })}>Retry</button>
+        <div className="error">Error while loading data</div>
+        <button onClick={handleOnClick}>Retry</button>
       </Toggle>
     </div>
   );

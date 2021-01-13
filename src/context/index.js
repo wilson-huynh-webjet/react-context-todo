@@ -2,8 +2,8 @@ import React, { createContext, useContext, useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import reducer from "./reducers";
 import Axios from "axios";
-import TYPES from "./types"
 import configs from "../settings";
+import { fetchTodoSuccess, fetchTodoError } from "./actions";
 
 const initialState = {
   todoList: [],
@@ -14,27 +14,25 @@ const initialState = {
 const TodoStateContext = createContext();
 const TodoDispatchContext = createContext();
 
-const useTodoStateContext = () => useContext(TodoStateContext)
-const useTodoDispatchContext = () => useContext(TodoDispatchContext)
-const useTodoContext = () => [ useTodoStateContext(), useTodoDispatchContext() ]
+const useTodoStateContext = () => useContext(TodoStateContext);
+const useTodoDispatchContext = () => useContext(TodoDispatchContext);
+const useTodoContext = () => [useTodoStateContext(), useTodoDispatchContext()];
 
 const ContextProvider = ({ children }) => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
 
   const fetchTodoList = () => {
     Axios.get(configs.todoAPI)
-      .then((response) =>
-        dispatch({ type: TYPES.FETCH_TODO_SUCCESS, payload: response.data })
-      )
-      .catch(() => dispatch({ type: TYPES.FETCH_TODO_ERROR }));
+      .then((response) => dispatch(fetchTodoSuccess(response.data)))
+      .catch(() => dispatch(fetchTodoError()));
   };
 
   // useEffect hook to fetch data from API
   useEffect(fetchTodoList, [state.fetchTodo]);
 
   return (
-    <TodoStateContext.Provider value={ state }>
-      <TodoDispatchContext.Provider value={ dispatch }>
+    <TodoStateContext.Provider value={state}>
+      <TodoDispatchContext.Provider value={dispatch}>
         {children}
         <pre>{JSON.stringify(state, null, 2)}</pre>
       </TodoDispatchContext.Provider>
@@ -42,4 +40,9 @@ const ContextProvider = ({ children }) => {
   );
 };
 
-export { useTodoContext, useTodoStateContext, useTodoDispatchContext, ContextProvider };
+export {
+  useTodoContext,
+  useTodoStateContext,
+  useTodoDispatchContext,
+  ContextProvider,
+};
